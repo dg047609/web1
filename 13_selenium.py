@@ -11,7 +11,7 @@ elem =  browser.find_element_by_class_name("link_login")
 elem.click()
 
 #3. id, pw 입력
-browser.find_element_by_id("id").send_keys("naver_id")
+browser.find_element_by_id("id").send_keys("jun200205")
 browser.find_element_by_id("pw").send_keys("password")
 
 #4. 로그인 버튼 입력
