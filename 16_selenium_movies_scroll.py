@@ -1,28 +1,3 @@
-# import requests
-# from bs4 import BeautifulSoup
-
-# url = "https://play.google.com/store/movies/top"
-# headers = {
-#     "User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36",
-#     "Accept-Language":"ko-KR,ko"
-#     }
-
-# res = requests.get(url, headers=headers)
-# res.raise_for_status()
-
-# soup = BeautifulSoup(res.text, "lxml")
-
-# movies = soup.find_all("div", attrs={"ImZGtf mpg5gc"})
-# print(len(movies))
-
-# # with open("movies.html", "w", encoding="utf8") as f:
-# #     f.write(soup.prettify()) #html 문서를 예쁘게 출력
-
-# for movie in movies:
-#     title = movie.find("div", attrs={"class":"WsMG1c nnK0zc"}).get_text()
-#     print(title)
-
-
 from os import times
 from selenium import webdriver
 browser = webdriver.Chrome("./chromedriver")
@@ -63,3 +38,39 @@ while True:
     previous_height = current_height
 
 print("스크롤 완료")
+
+import requests
+from bs4 import BeautifulSoup
+
+soup = BeautifulSoup(browser.page_source, "lxml")
+
+movies = soup.find_all("div", attrs={"class":"Vpfmgd"})
+# print(len(movies))
+
+for movie in movies:
+    title = movie.find("div", attrs={"class":"WsMG1c nnK0zc"}).get_text()
+    # print(title)
+
+    #할인 전 가격
+    original_price = movie.find("span", attrs={"class":"SUZt4c djCuy"})
+    if original_price:
+        original_price = original_price.get_text()
+    else:
+        # print(title)
+        continue
+
+    #할인 된 가격
+    price = movie.find("span", attrs={"class":"VfPpfd ZdBevf i5DZme"}).get_text()
+
+    #링크
+    link = movie.find("a", attrs={"class":"JC71ub"})["href"]
+
+    #https://play.google.com + link
+
+    print(f"제목: {title}")
+    print(f"할인 전 금액: {original_price}")
+    print(f"할인 후 금액: {price}")
+    print("링크: ", "https://play.google.com" + link)
+    print("-"*100)
+
+browser.quit() #브라우저 종료
