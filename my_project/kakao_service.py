@@ -6,5 +6,6 @@ res = requests.get(url)
 res.raise_for_status()
 
 soup = BeautifulSoup(res.text, "lxml")
-service = soup.find("strong", attrs={"class":"tit_card"})
+services = soup.find("strong", attrs={"class": "link_item"})
+service = services.get_text()
 print(service)
